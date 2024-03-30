@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
+using DefaultNamespace.UI;
 using Grid;
 using Player;
 using UnityEngine;
@@ -13,7 +15,9 @@ public class ApplicationInstaller : MonoInstaller
         
         GridInstaller.Install(Container);
         PlayerInstaller.Install(Container);
-
+        UIInstaller.Install(Container);
+        InputInstaller.Install(Container);
+        
         Container.Bind<GameController.GameController>().AsSingle().NonLazy();
     }
 }

@@ -5,6 +5,9 @@ namespace Player
 {
     public class PlayerView : MonoBehaviour
     {
+        public bool IsDead;
+        public float Speed;
+        
         [SerializeField] private SpriteRenderer headSprite;
         [SerializeField] private SpriteRenderer[] handSprite;
         [SerializeField] private SpriteRenderer bodySprite;

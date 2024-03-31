@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.UI;
+using Enemy;
 using Grid;
 using Player;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class ApplicationInstaller : MonoInstaller
         PlayerInstaller.Install(Container);
         UIInstaller.Install(Container);
         InputInstaller.Install(Container);
+        EnemyInstaller.Install(Container);
         
         Container.Bind<GameController.GameController>().AsSingle().NonLazy();
     }

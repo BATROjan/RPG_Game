@@ -4,6 +4,7 @@ using DefaultNamespace;
 using DefaultNamespace.UI;
 using Enemy;
 using Grid;
+using MainCamera;
 using Player;
 using UnityEngine;
 using Zenject;
@@ -12,8 +13,7 @@ public class ApplicationInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.InstantiatePrefabResource("CameraView");
-        
+        CameraInstaller.Install(Container);
         GridInstaller.Install(Container);
         PlayerInstaller.Install(Container);
         UIInstaller.Install(Container);

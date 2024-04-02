@@ -19,6 +19,7 @@ namespace Player
 [Serializable]
 public struct PlayerModel
 {
+    public int HealthCount;
     public Sprite HeadSprite;
     public Sprite HandSprite;
     public Sprite BodySprite;

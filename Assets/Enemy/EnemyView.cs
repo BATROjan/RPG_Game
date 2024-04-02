@@ -11,7 +11,9 @@ namespace Enemy
         public Action<PlayerView> PlayerIsFound;
         public bool IsFound;
         public bool IsDead;
+        public bool IsReadyToAttack = true;
         public float Speed;
+        public float Damage;
 
         [SerializeField] private CircleCollider2D _circleCollider2D; 
         [SerializeField] private SpriteRenderer headSprite;
@@ -24,7 +26,7 @@ namespace Enemy
         private void ReInit(EnemyModel enemyModel)
         {
             _circleCollider2D.radius = enemyModel.RadiusAttack;
-            
+            Damage = enemyModel.Damage;
             if (enemyModel.Sprites.HeadSprite) 
             {
                 headSprite.sprite = enemyModel.Sprites.HeadSprite;

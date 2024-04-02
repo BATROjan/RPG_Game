@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyModels:
   - Type: 0
     Health: 20
+    Damage: 10
     Sprites:
       HeadSprite: {fileID: 7117401074472609237, guid: 31a01debfefe1c741bd795943eb90eb8, type: 3}
       ShoulderSprite: {fileID: -4436161977106058220, guid: 31a01debfefe1c741bd795943eb90eb8, type: 3}

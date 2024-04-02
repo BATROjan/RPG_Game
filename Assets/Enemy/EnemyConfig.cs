@@ -46,6 +46,7 @@ namespace Enemy
     {
         public EnemyType Type;
         public int Health;
+        public int Damage;
         public EnemySprites Sprites;
         public float RadiusAttack;
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using Player;
 using UnityEngine;
 using Zenject;
@@ -15,7 +16,7 @@ namespace Enemy
 
         private PlayerView _playerView;
         private bool isFind;
-        
+        private bool isReadyToAtack = true;
         public EnemyController(
             TickableManager tickableManager,
             EnemyConfig enemyConfig, 
@@ -73,8 +74,23 @@ namespace Enemy
                     {
                         enemy.Value.transform.position = Vector3.MoveTowards(enemy.Value.transform.position, _playerView.transform.position, enemy.Value.Speed);
                     }
+                    else
+                    {
+                        if (enemy.Value.IsReadyToAttack)
+                        {
+                            Attack(enemy.Value);
+                        }
+                    }
                 }
             }
+        }
+
+        private void Attack(EnemyView enemy)
+        {
+            _dictEnemyViews[enemy.GetInstanceID()].IsReadyToAttack = false;
+            _playerView.healthImage.fillAmount -= enemy.Damage*0.01f;
+            _playerView.Heath -= enemy.Damage;
+            DOVirtual.DelayedCall(2, () => _dictEnemyViews[enemy.GetInstanceID()].IsReadyToAttack = true);
         }
     }
 }

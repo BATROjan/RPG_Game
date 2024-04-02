@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 using Zenject;
@@ -6,6 +7,9 @@ namespace Enemy
 {
     public class EnemyView : MonoBehaviour
     {
+
+        public Action<PlayerView> PlayerIsFound;
+        public bool IsFound;
         public bool IsDead;
         public float Speed;
 
@@ -16,6 +20,7 @@ namespace Enemy
         [SerializeField] private SpriteRenderer bodySprite;
         [SerializeField] private SpriteRenderer[] footSprite;
 
+        private PlayerView _playerView;
         private void ReInit(EnemyModel enemyModel)
         {
             _circleCollider2D.radius = enemyModel.RadiusAttack;
@@ -51,6 +56,31 @@ namespace Enemy
                 foreach (var foot in footSprite)
                 {
                     foot.sprite = enemyModel.Sprites.FootSprite;
+                }
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                PlayerIsFound?.Invoke(other.GetComponent<PlayerView>());
+                IsFound = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            IsFound = false;
+        }
+
+        private void Update()
+        {
+            if (_playerView)
+            {
+                if (Vector3.Distance(transform.position, _playerView.transform.position) > 0.57f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, _playerView.transform.position, Speed);
                 }
             }
         }

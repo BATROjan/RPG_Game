@@ -21,7 +21,10 @@ namespace GameController
         public void StartGame()
         {  
             _playerController.SpawnPlayer();
-            _enemyController.Spawn(EnemyType.Zombie);
+            for (int i = 0; i < 3; i++)
+            {
+                _enemyController.Spawn(EnemyType.Zombie);
+            }
         }   
         
         public void StopGame()

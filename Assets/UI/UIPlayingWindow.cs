@@ -1,10 +1,15 @@
 using UnityEngine;
+using Zenject;
 
 namespace DefaultNamespace.UI
 {
     public class UIPlayingWindow : MonoBehaviour
     {
-        [SerializeField] private FixedJoint fixedJoint;
+        public UIButton[] Buttons;
         
+        public class Pool : MonoMemoryPool<UIPlayingWindow>
+        {
+            
+        }
     }
 }

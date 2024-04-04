@@ -14,9 +14,9 @@ public class ApplicationInstaller : MonoInstaller
     public override void InstallBindings()
     {
         CameraInstaller.Install(Container);
+        UIInstaller.Install(Container);
         GridInstaller.Install(Container);
         PlayerInstaller.Install(Container);
-        UIInstaller.Install(Container);
         InputInstaller.Install(Container);
         EnemyInstaller.Install(Container);
         

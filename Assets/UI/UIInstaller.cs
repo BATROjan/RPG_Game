@@ -6,7 +6,14 @@ namespace DefaultNamespace.UI
     {
         public override void InstallBindings()
         {
-            Container.InstantiatePrefabResourceForComponent<UIRoot>("UIRoot");
+            Container
+                .BindMemoryPool<UIPlayingWindow, UIPlayingWindow.Pool>()
+                .FromComponentInNewPrefabResource("UIPlayerWindowView");
+
+            Container
+                .Bind<UIPlayingWindowController>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

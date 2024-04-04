@@ -19,6 +19,10 @@ namespace DefaultNamespace.UI
         public UIPlayingWindow GetWindow()
         {
             return _uiPlayingWindow;
+        } 
+        public FixedJoystick GetJoystick()
+        {
+            return _uiPlayingWindow.FixedJoystick;
         }
     }
 }

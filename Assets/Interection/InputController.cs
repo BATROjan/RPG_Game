@@ -7,6 +7,7 @@ namespace DefaultNamespace
 {
     public class InputController : ITickable
     {
+        private readonly UIPlayingWindowController _uiPlayingWindowController;
         private readonly PlayerController _playerController;
         private readonly TickableManager _tickableManager;
 
@@ -16,9 +17,11 @@ namespace DefaultNamespace
         private PlayerView _playerView;
         
         public InputController(
+            UIPlayingWindowController uiPlayingWindowController,
             PlayerController playerController,
             TickableManager tickableManager)
         {
+            _uiPlayingWindowController = uiPlayingWindowController;
             _playerController = playerController;
             _tickableManager = tickableManager;
             _tickableManager.Add(this);
@@ -31,7 +34,7 @@ namespace DefaultNamespace
             }
             else
             {
-                _fixedJoystick = GameObject.Find("Fixed Joystick").GetComponent<FixedJoystick>();
+                _fixedJoystick = _uiPlayingWindowController.GetJoystick();
 
                 _playerView = _playerController.GetPlayerView();
                 

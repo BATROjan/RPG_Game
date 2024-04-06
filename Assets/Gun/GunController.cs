@@ -16,11 +16,16 @@ namespace Gun
             _gunViewPool = gunViewPool;
         }
 
-        public GunView Spawn()
+        public GunView Spawn(GunConfig.GunType type)
         {
-            var gun = _gunViewPool.Spawn(_gunConfig.GetGunModelByType(GunConfig.GunType.Makarov));
-            _dictionaryOfGunViews.Add(GunConfig.GunType.Makarov, gun);
+            var gun = _gunViewPool.Spawn(_gunConfig.GetGunModelByType(type));
+            _dictionaryOfGunViews.Add(gun.GetGunType(), gun);
             return gun;
+        }
+
+        public void Despawn(GunView gunView)
+        {
+            _gunViewPool.Despawn(gunView);
         }
     }
 }

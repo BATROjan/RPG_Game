@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using DefaultNamespace.UI;
 using Gun;
 using Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BackPack
 {
     public class BackPackController
     {
+        public Action<GunView> OnChangeGun;
+        private readonly GunController _gunController;
         private readonly UIPlayingWindowController _uiPlayingWindowController;
 
         private bool isActive;
@@ -17,8 +21,10 @@ namespace BackPack
 
         private GunView currentGun;
         public BackPackController(
+            GunController gunController,
             UIPlayingWindowController uiPlayingWindowController)
         {
+            _gunController = gunController;
             _uiPlayingWindowController = uiPlayingWindowController;
         }
 
@@ -36,15 +42,15 @@ namespace BackPack
                 {
                     if (!cell.IsUsed)
                     {
+                        cell.GunView = gunView;
                         cell.CellImage.sprite = gunView.GetGunImage();
                         cell.Count.text = " ";
                         cell.IsUsed = true;
+                        _gunController.Despawn(gunView);
                         return;
                     }
                 }
             }
-            
-            GameObject.Destroy(gunView.gameObject);
         }
 
         public Sprite GetCurrentSprite()
@@ -61,7 +67,18 @@ namespace BackPack
         public void Init()
         {
             _uiPlayingWindow = _uiPlayingWindowController.GetWindow();
+
             _uiPlayingWindow.Buttons[1].OnClick += ControllBackPack;
+        }
+
+        private void SelectGun(CellView cellView)
+        {
+            if (currentGun != cellView.GunView)
+            {
+                currentGun = cellView.GunView;
+                OnChangeGun?.Invoke(currentGun);
+            }
+            _uiPlayingWindow.BackPackView.Selectpanel.gameObject.transform.localPosition = cellView.transform.localPosition;
         }
 
         private void ControllBackPack()
@@ -69,6 +86,23 @@ namespace BackPack
             _uiPlayingWindow.Buttons[0].gameObject.SetActive(isActive);
             _uiPlayingWindow.BackPackView.gameObject.SetActive(!isActive);
             _uiPlayingWindow.FixedJoystick.gameObject.SetActive(isActive);
+            if (!isActive)
+            {
+                foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
+                {
+                    if (cell.CellImage.sprite)
+                    {
+                        cell.OnSelect += SelectGun;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
+                {
+                    cell.OnSelect -= SelectGun;
+                }
+            }
             isActive = !isActive;
         }
     }

@@ -22,6 +22,7 @@ namespace Gun
             ammunitionCount = gunModel.AmmunitionCount;
             reloadTime = gunModel.ReloadTime;
             boxCollider2D.size = gunModel.BoxColliderSize;
+            boxCollider2D.offset = gunModel.BoxColliderOffset;
         }
 
         public GunConfig.GunType GetGunType()

@@ -40,7 +40,8 @@ namespace GameController
                 _enemyController.Spawn(EnemyType.Zombie);
             }
 
-            _gunController.Spawn();
+            _gunController.Spawn(GunConfig.GunType.Makarov);
+            _gunController.Spawn(GunConfig.GunType.AK74);
             _backPackController.Init();
         }
 

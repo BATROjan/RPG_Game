@@ -12,6 +12,10 @@ namespace Bullet
         public int GetBulletCount()
         {
             return _bulletCount;
+        }  
+        public Sprite GetBulletSprite()
+        {
+            return bulletSpriteRenderer.sprite;
         }
         private void Reinit(BulletModel model)
         {

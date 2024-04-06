@@ -22,5 +22,10 @@ namespace Bullet
             _dictionary.Add(bulletView.GetBulletCount(), bulletView);
             return bulletView;
         }
+
+        public void Despawn(BulletView bulletView)
+        {
+            _pool.Despawn(bulletView);
+        }
     }
 }

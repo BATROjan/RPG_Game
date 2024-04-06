@@ -1,4 +1,5 @@
 using BackPack;
+using Bullet;
 using DefaultNamespace.UI;
 using DG.Tweening;
 using Gun;
@@ -34,6 +35,7 @@ namespace Player
             _playerView = _playerPool.Spawn(_playerConfig.GetPlayerModel());
             _uiPlayingWindowController.GetWindow().Buttons[0].OnClick += Fire;
             _playerView.OnTakeGun += TakeGun;
+            _playerView.OnTakeBullet += TakeBullet;
             _backPackController.OnChangeGun += ChangeGun;
             return _playerView;
         }
@@ -41,7 +43,14 @@ namespace Player
         private void ChangeGun(GunView gun)
         {
             _gunView = gun;
-            _playerView.GunSprite.sprite = _gunView.GetGunImage();
+            if (gun)
+            {
+                _playerView.GunSprite.sprite = _gunView.GetGunImage();
+            }
+            else
+            {
+                _playerView.GunSprite.sprite = null;
+            }
         }
 
         private void TakeGun(GunView gunView)
@@ -52,6 +61,11 @@ namespace Player
                 _gunView = gunView;
                 _playerView.GunSprite.sprite = _gunView.GetGunImage();
             }
+        }
+
+        private void TakeBullet(BulletView bulletView)
+        {
+            _backPackController.TakeBulletInBackPack(bulletView);
         }
 
         public PlayerView GetPlayerView()

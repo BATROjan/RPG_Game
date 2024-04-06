@@ -47,6 +47,7 @@ namespace GameController
             _gunController.Spawn(GunConfig.GunType.Makarov);
             _gunController.Spawn(GunConfig.GunType.AK74);
             _bulletController.SpawnBullet(10);
+            _bulletController.SpawnBullet(5);
             _backPackController.Init();
         }
 

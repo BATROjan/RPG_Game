@@ -1,4 +1,5 @@
 using System;
+using Bullet;
 using Gun;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ namespace Player
     public class PlayerView : MonoBehaviour
     {
         public Action<GunView> OnTakeGun;
+        public Action<BulletView> OnTakeBullet;
 
         public float Heath; 
         public bool IsDead;
@@ -27,6 +29,10 @@ namespace Player
             if (other.gameObject.CompareTag("Gun"))
             {
                 OnTakeGun?.Invoke(other.collider.GetComponent<GunView>());
+            }
+            if (other.gameObject.CompareTag("Bullet"))
+            {
+                OnTakeBullet?.Invoke(other.collider.GetComponent<BulletView>());
             }
         }
 

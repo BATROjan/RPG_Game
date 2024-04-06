@@ -32,16 +32,16 @@ namespace Enemy
         public EnemyView Spawn(EnemyType type)
         {
             var enemy = _enemyPool.Spawn(_enemyConfig.GetEnemyModelByType(type));
-            enemy.transform.position = GetRandomPosition(enemy);
+            enemy.transform.position = GetRandomPosition();
             _dictEnemyViews.Add(enemy.GetInstanceID(), enemy);
             enemy.PlayerIsFound += ReadyToMoveForPlayer;
 
             return enemy;
         }
 
-        private Vector3 GetRandomPosition(EnemyView enemyView)
+        private Vector3 GetRandomPosition( )
         {
-            Vector3 position = new Vector3(Random.Range(-10, 14), Random.Range(-5, 7), 0);
+            Vector3 position = new Vector3(Random.Range(-11, 20), Random.Range(0, 12), 0);
             return position;
         }
 

@@ -39,6 +39,7 @@ namespace Player
         public PlayerView SpawnPlayer()
         {
             _playerView = _playerPool.Spawn(_playerConfig.GetPlayerModel());
+            _playerView.transform.position = new Vector3(-15, -8, 0);
             _uiPlayingWindowController.GetWindow().Buttons[0].OnClick += Fire;
             _playerView.OnTakeGun += TakeGun;
             _playerView.OnTakeBullet += TakeBullet;
@@ -108,15 +109,16 @@ namespace Player
             {
                 if (currentEnemy)
                 {
-                    _isReadyToFire = false;
-                    currentEnemy.Health -= _gunView.GetGunDamage();
-                    float aaa = (float)currentEnemy.Health / currentEnemy.MaxHealth;
-                    currentEnemy.HealthImage.fillAmount = aaa;
-                    Debug.Log("Fire");
+                    if (_backPackController.SpendBullet())
+                    {
+                        _isReadyToFire = false;
+                        currentEnemy.Health -= _gunView.GetGunDamage();
+                        float percent = (float)currentEnemy.Health / currentEnemy.MaxHealth;
+                        currentEnemy.HealthImage.fillAmount = percent;
+                        _isReadyToFire = true;
+                    }
                 }
-                DOVirtual.DelayedCall(_gunView.GetGunReloadTime(), () => _isReadyToFire = true);
             }
-
             
         }
     }

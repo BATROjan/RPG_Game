@@ -11,7 +11,10 @@ namespace BackPack
 {
     public class BackPackController
     {
+        public int BulletCount;
+        
         public Action<GunView> OnChangeGun;
+        
         private readonly BulletController _bulletController;
         private readonly GunController _gunController;
         private readonly UIPlayingWindowController _uiPlayingWindowController;
@@ -22,7 +25,7 @@ namespace BackPack
 
         private Dictionary<GunConfig.GunType, GunView> _dictionaryOfGun = new Dictionary<GunConfig.GunType, GunView>();
         private Dictionary<Sprite, int> _bulletDictionaryCount = new Dictionary<Sprite, int>();
-        private Dictionary<Sprite,CellView> AAAA = new Dictionary<Sprite,CellView>();
+        private Dictionary<Sprite,CellView> _dictionaryOfBulletCells = new Dictionary<Sprite,CellView>();
         
         private GunView currentGun;
         private CellView currentCell;
@@ -66,36 +69,67 @@ namespace BackPack
         }  
         public void TakeBulletInBackPack(BulletView bulletView)
         {
-                if (_bulletDictionaryCount.Count == 0)
+            if (_bulletDictionaryCount.Count == 0)
+            {
+                _bulletDictionaryCount.Add(bulletView.GetBulletSprite(), bulletView.GetBulletCount());
+                BulletCount = bulletView.GetBulletCount();
+                foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
                 {
-                    _bulletDictionaryCount.Add(bulletView.GetBulletSprite(), bulletView.GetBulletCount());
-                    foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
+                    if (!cell.IsUsed)
                     {
-                        if (!cell.IsUsed)
+                        if (!currentCell)
                         {
-                            if (!currentCell)
-                            {
-                                currentCell = cell;
-                            }
-                            cell.CellImage.sprite = bulletView.GetBulletSprite();
-                            cell.Count.text = bulletView.GetBulletCount().ToString();
-                            cell.IsUsed = true;
-                            _bulletController.Despawn(bulletView);
-                            AAAA.Add( bulletView.GetBulletSprite(), cell);
-                            return;
+                            currentCell = cell;
                         }
+                        cell.CellImage.sprite = bulletView.GetBulletSprite();
+                        cell.Count.text = bulletView.GetBulletCount().ToString();
+                        cell.IsUsed = true;
+                        _bulletController.Despawn(bulletView);
+                        _dictionaryOfBulletCells.Add( bulletView.GetBulletSprite(), cell);
+                        return;
                     }
+                }
+            }
+            else
+            {
+                BulletCount = _bulletDictionaryCount[bulletView.GetBulletSprite()];
+                _bulletDictionaryCount.Remove(bulletView.GetBulletSprite());
+                BulletCount += bulletView.GetBulletCount();
+                _bulletDictionaryCount.Add(bulletView.GetBulletSprite(), BulletCount);
+                _dictionaryOfBulletCells[bulletView.GetBulletSprite()].Count.text = BulletCount.ToString();
+                _bulletController.Despawn(bulletView);
+            }
+        }
+
+        public bool SpendBullet()
+        {
+            bool ready = false;
+            if (BulletCount>0)
+            {
+                BulletCount -= 1;
+                if (BulletCount == 0)
+                {
+                    foreach (var cell in _dictionaryOfBulletCells.Values)
+                    {
+                        currentCell = cell;
+                    }
+
+                    _bulletDictionaryCount.Remove(currentCell.CellImage.sprite);
+                    _dictionaryOfBulletCells.Remove(currentCell.CellImage.sprite);
+                    
+                    DeleteItem();
+
                 }
                 else
                 {
-                    int count = _bulletDictionaryCount[bulletView.GetBulletSprite()];
-                    _bulletDictionaryCount.Remove(bulletView.GetBulletSprite());
-                    count += bulletView.GetBulletCount();
-                    _bulletDictionaryCount.Add(bulletView.GetBulletSprite(), count);
-                    AAAA[bulletView.GetBulletSprite()].Count.text = count.ToString();
-                    _bulletController.Despawn(bulletView);
+                    foreach (var cell in _dictionaryOfBulletCells.Values)
+                    {
+                        cell.Count.text = BulletCount.ToString();
+                    }
                 }
-            
+                ready = true;
+            }
+            return ready;
         }
 
         public void Init()

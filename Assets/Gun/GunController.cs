@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gun
 {
@@ -19,8 +20,14 @@ namespace Gun
         public GunView Spawn(GunConfig.GunType type)
         {
             var gun = _gunViewPool.Spawn(_gunConfig.GetGunModelByType(type));
+            gun.transform.position = GetRandomPosition();
             _dictionaryOfGunViews.Add(gun.GetGunType(), gun);
             return gun;
+        }
+        private Vector3 GetRandomPosition( )
+        {
+            Vector3 position = new Vector3(Random.Range(-11, 20), Random.Range(0, 12), 0);
+            return position;
         }
 
         public void Despawn(GunView gunView)

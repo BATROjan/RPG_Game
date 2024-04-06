@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using BackPack;
 using Bullet;
 using DefaultNamespace.UI;
 using DG.Tweening;
+using Enemy;
 using Gun;
 using UnityEngine;
 
@@ -16,6 +18,10 @@ namespace Player
 
         private PlayerView _playerView;
         private GunView _gunView;
+        private EnemyView currentEnemy;
+        private bool _isReadyToFire;
+        
+        private List<EnemyView> _enemyViews = new List<EnemyView>();
         
         private UIPlayingWindow _uiPlayingWindow;
         public PlayerController(
@@ -36,8 +42,28 @@ namespace Player
             _uiPlayingWindowController.GetWindow().Buttons[0].OnClick += Fire;
             _playerView.OnTakeGun += TakeGun;
             _playerView.OnTakeBullet += TakeBullet;
+            _playerView.OnFindEnemy += AddEnemy;
+            _playerView.OnLoseEnemy += LoseEnemy;
             _backPackController.OnChangeGun += ChangeGun;
             return _playerView;
+        }
+
+        private void LoseEnemy(EnemyView enemy)
+        {
+            _enemyViews.Remove(enemy);
+            if (_enemyViews.Count == 0)
+            {
+                currentEnemy = null;
+            }
+        }
+
+        private void AddEnemy(EnemyView enemy)
+        {
+            if (_enemyViews.Count == 0)
+            {
+                currentEnemy = enemy;
+            }
+            _enemyViews.Add(enemy);
         }
 
         private void ChangeGun(GunView gun)
@@ -46,10 +72,12 @@ namespace Player
             if (gun)
             {
                 _playerView.GunSprite.sprite = _gunView.GetGunImage();
+                _isReadyToFire = true;
             }
             else
             {
                 _playerView.GunSprite.sprite = null;
+                _isReadyToFire = false;
             }
         }
 
@@ -59,6 +87,7 @@ namespace Player
             if (!_playerView.GunSprite.sprite)
             {
                 _gunView = gunView;
+                _isReadyToFire = true;
                 _playerView.GunSprite.sprite = _gunView.GetGunImage();
             }
         }
@@ -75,7 +104,20 @@ namespace Player
 
         public void Fire()
         {
-            Debug.Log("Fire");
+            if (_isReadyToFire)
+            {
+                if (currentEnemy)
+                {
+                    _isReadyToFire = false;
+                    currentEnemy.Health -= _gunView.GetGunDamage();
+                    float aaa = (float)currentEnemy.Health / currentEnemy.MaxHealth;
+                    currentEnemy.HealthImage.fillAmount = aaa;
+                    Debug.Log("Fire");
+                }
+                DOVirtual.DelayedCall(_gunView.GetGunReloadTime(), () => _isReadyToFire = true);
+            }
+
+            
         }
     }
 }

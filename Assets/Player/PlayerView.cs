@@ -1,5 +1,6 @@
 using System;
 using Bullet;
+using Enemy;
 using Gun;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,9 @@ namespace Player
     {
         public Action<GunView> OnTakeGun;
         public Action<BulletView> OnTakeBullet;
+        
+        public Action<EnemyView> OnFindEnemy;
+        public Action<EnemyView> OnLoseEnemy;
 
         public float Heath; 
         public bool IsDead;
@@ -33,6 +37,24 @@ namespace Player
             if (other.gameObject.CompareTag("Bullet"))
             {
                 OnTakeBullet?.Invoke(other.collider.GetComponent<BulletView>());
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            var enemy = other.GetComponent<EnemyView>();
+            if (enemy)
+            {
+                OnFindEnemy?.Invoke(enemy);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            var enemy = other.GetComponent<EnemyView>();
+            if (enemy)
+            {
+                OnLoseEnemy?.Invoke(enemy);
             }
         }
 

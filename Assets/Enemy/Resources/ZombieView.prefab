@@ -255,7 +255,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsFound: 0
   IsDead: 0
+  IsReadyToAttack: 1
   Speed: 0.01
+  Health: 0
+  Damage: 0
+  HealthImage: {fileID: 7474626939736288906}
   _circleCollider2D: {fileID: 6103499829118815548}
   headSprite: {fileID: 6503964969042875105}
   shoulderSprite:

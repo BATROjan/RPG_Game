@@ -33,6 +33,15 @@ namespace Gun
         public Sprite GetGunImage()
         {
             return gunSprite.sprite;
+        }  
+        public int GetGunDamage()
+        {
+            return damage;
+        }
+
+        public float  GetGunReloadTime()
+        {
+            return reloadTime;
         }
         public class  Pool : MonoMemoryPool<GunConfig.GunModel, GunView>
         {

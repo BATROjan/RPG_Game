@@ -50,6 +50,7 @@ namespace Gun
             public int MagazineCount;
             public int AmmunitionCount;
             public float ReloadTime;
+            public Vector2 BoxColliderSize;
         }
 
         public enum GunType

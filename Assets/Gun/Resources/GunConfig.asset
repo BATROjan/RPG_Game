@@ -19,3 +19,4 @@ MonoBehaviour:
     MagazineCount: 7
     AmmunitionCount: 56
     ReloadTime: 1
+    BoxColliderSize: {x: 0.16, y: 0.16}

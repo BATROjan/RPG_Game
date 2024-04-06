@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4329113923086966659}
   m_Layer: 0
   m_Name: GunView
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSprite: {fileID: 6561479854723470159}
+  boxCollider2D: {fileID: 562572532844017844}

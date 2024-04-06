@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BackPack;
+using Bullet;
 using DefaultNamespace;
 using DefaultNamespace.UI;
 using Enemy;
@@ -21,6 +22,7 @@ public class ApplicationInstaller : MonoInstaller
         GridInstaller.Install(Container);
         PlayerInstaller.Install(Container);
         GunInstaller.Install(Container);
+        BulletInstaller.Install(Container);
         InputInstaller.Install(Container);
         EnemyInstaller.Install(Container);
         

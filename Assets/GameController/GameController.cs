@@ -1,4 +1,5 @@
 using BackPack;
+using Bullet;
 using DefaultNamespace.UI;
 using DG.Tweening;
 using Enemy;
@@ -9,6 +10,7 @@ namespace GameController
 {
     public class GameController
     {
+        private readonly BulletController _bulletController;
         private readonly BackPackController _backPackController;
         private readonly UIPlayingWindowController _uiPlayingWindowController;
         private readonly EnemyController _enemyController;
@@ -16,12 +18,14 @@ namespace GameController
         private readonly PlayerController _playerController;
 
         public GameController(
+            BulletController bulletController,
             BackPackController backPackController,
             UIPlayingWindowController uiPlayingWindowController,
             EnemyController enemyController,
             GunController gunController,
             PlayerController playerController)
         {
+            _bulletController = bulletController;
             _backPackController = backPackController;
             _uiPlayingWindowController = uiPlayingWindowController;
             _enemyController = enemyController;
@@ -42,6 +46,7 @@ namespace GameController
 
             _gunController.Spawn(GunConfig.GunType.Makarov);
             _gunController.Spawn(GunConfig.GunType.AK74);
+            _bulletController.SpawnBullet(10);
             _backPackController.Init();
         }
 

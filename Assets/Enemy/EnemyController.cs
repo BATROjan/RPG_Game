@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Player;
 using UnityEngine;
+using XMLSystem;
 using Zenject;
 
 namespace Enemy
@@ -9,6 +10,7 @@ namespace Enemy
     public class EnemyController: ITickable
     {
         public List<EnemyView> EnemyViews = new List<EnemyView>();
+        private readonly IXMLSystem _xmlSystem;
         private readonly TickableManager _tickableManager;
         private readonly EnemyConfig _enemyConfig;
         private readonly EnemyView.Pool _enemyPool;
@@ -19,10 +21,12 @@ namespace Enemy
         private bool isFind;
         private bool isReadyToAtack = true;
         public EnemyController(
+            IXMLSystem xmlSystem,
             TickableManager tickableManager,
             EnemyConfig enemyConfig, 
             EnemyView.Pool enemyPool)
         {
+            _xmlSystem = xmlSystem;
             _tickableManager = tickableManager;
             _enemyConfig = enemyConfig;
             _enemyPool = enemyPool;
@@ -30,7 +34,7 @@ namespace Enemy
             _tickableManager.Add(this);
         }
 
-        public EnemyView Spawn(EnemyType type)
+        public EnemyView Spawn(EnemyType type, int id)
         {
             var enemy = _enemyPool.Spawn(_enemyConfig.GetEnemyModelByType(type));
             enemy.transform.position = GetRandomPosition();
@@ -38,6 +42,13 @@ namespace Enemy
             EnemyViews.Add(enemy);
             enemy.PlayerIsFound += ReadyToMoveForPlayer;
             enemy.OnDead += DeadLogic;
+            if (_xmlSystem.LoadFromXML(enemy.EnemyType.ToString()+ id.ToString(), "health") != null)
+            {
+                enemy.Health = int.Parse(_xmlSystem.LoadFromXML(enemy.EnemyType.ToString()+ id.ToString(), "health"));
+                float percent = (float)enemy.Health / enemy.MaxHealth;
+                enemy.HealthImage.fillAmount = percent;
+                Debug.Log("AAAAAA="+ enemy.Health);
+            }
             return enemy;
         }
 

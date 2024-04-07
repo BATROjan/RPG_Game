@@ -51,11 +51,10 @@ namespace Player
             _playerView.OnLoseEnemy += LoseEnemy;
             _playerView.OnDead += DeadLogic;
             _backPackController.OnChangeGun += ChangeGun;
-            if (_xmlSystem.LoadFromXML("PlayerHealth") != null)
+            if (_xmlSystem.LoadFromXML("PlayerHealth", "value") != null)
             {
-                _playerView.Heath = int.Parse(_xmlSystem.LoadFromXML("PlayerHealth"));
+                _playerView.Heath = int.Parse(_xmlSystem.LoadFromXML("PlayerHealth", "value"));
                 _playerView.healthImage.fillAmount = _playerView.Heath / 100;
-                Debug.Log("AAAAAA="+ _playerView.Heath);
             }
 
             return _playerView;

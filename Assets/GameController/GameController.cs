@@ -47,7 +47,7 @@ namespace GameController
             _playerController.SpawnPlayer();
             for (int i = 0; i < 3; i++)
             {
-                _enemyController.Spawn(EnemyType.Zombie);
+                _enemyController.Spawn(EnemyType.Zombie, i);
             }
 
             _gunController.Spawn(GunConfig.GunType.Makarov);
@@ -61,7 +61,10 @@ namespace GameController
         public void ExitGame()
         {
             _xmlSystem.CreatXMLFile();
-            _xmlSystem.SaveHealthToXML(_playerController.GetPlayerView().Heath.ToString());
+            if (_playerController.GetPlayerView())
+            {
+                _xmlSystem.SaveHealthToXML(_playerController.GetPlayerView().Heath.ToString());
+            }
             _xmlSystem.SaveEnemyCountToXML(_enemyController.EnemyViews);
             Application.Quit();
         }

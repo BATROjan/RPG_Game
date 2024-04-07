@@ -10,7 +10,8 @@ namespace Enemy
     {
         public Action<PlayerView> PlayerIsFound;
         public Action<EnemyView> OnDead;
-        
+
+        public EnemyType EnemyType;
         public bool IsFound;
         public bool IsReadyToAttack = true;
         public float Speed;
@@ -33,7 +34,7 @@ namespace Enemy
             Damage = enemyModel.Damage;
             Health = enemyModel.Health;
             MaxHealth = enemyModel.Health;
-            
+            EnemyType = enemyModel.Type;
             if (enemyModel.Sprites.HeadSprite) 
             {
                 headSprite.sprite = enemyModel.Sprites.HeadSprite;

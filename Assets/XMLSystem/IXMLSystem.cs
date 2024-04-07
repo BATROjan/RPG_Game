@@ -12,6 +12,6 @@ namespace XMLSystem
         void SaveEnemyCountToXML(List<EnemyView> list);
         void SaveGunInBackPackToXML(Dictionary<GunView, float> dictionary);
         void SaveBulletToXML(Dictionary<BulletView, float> dictionary);
-        string LoadFromXML(string key);
+        string LoadFromXML(string key, string value);
     }
 }

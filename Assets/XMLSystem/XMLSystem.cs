@@ -32,7 +32,7 @@ namespace XMLSystem
             xmlDoc.Save(_savePath + _xmlConfig.SaveName);
         }
 
-        public string LoadFromXML(string key)
+        public string LoadFromXML(string key, string value)
         {
             var loadPath = _savePath + _xmlConfig.SaveName;
             if (!File.Exists(loadPath))
@@ -50,7 +50,7 @@ namespace XMLSystem
                 return null;
             }
     
-            return node.Attributes["value"].Value;
+            return node.Attributes[value].Value;
         }
 
         public void SaveHealthToXML(string health)
@@ -71,12 +71,11 @@ namespace XMLSystem
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(_savePath + _xmlConfig.SaveName);
             var rootNode = xmlDoc.DocumentElement;
-            
-            foreach (var enemy in list)
+
+            for (int i = 0; i < list.Count; i++)
             {
-                var elem = xmlDoc.CreateElement("Enemy");
-                elem.SetAttribute("name", enemy.name);
-                elem.SetAttribute("health", enemy.Health.ToString());
+                var elem = xmlDoc.CreateElement(list[i].EnemyType.ToString()+i.ToString());
+                elem.SetAttribute("health", list[i].Health.ToString());
                 rootNode.AppendChild(elem);
             }
 

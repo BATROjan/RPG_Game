@@ -6,11 +6,13 @@ using DG.Tweening;
 using Enemy;
 using Gun;
 using UnityEngine;
+using XMLSystem;
 
 namespace Player
 {
     public class PlayerController
     {
+        private readonly IXMLSystem _xmlSystem;
         private readonly BackPackController _backPackController;
         private readonly UIPlayingWindowController _uiPlayingWindowController;
         private readonly PlayerView.Pool _playerPool;
@@ -25,11 +27,13 @@ namespace Player
         
         private UIPlayingWindow _uiPlayingWindow;
         public PlayerController(
+            IXMLSystem xmlSystem,
             BackPackController backPackController,
             UIPlayingWindowController uiPlayingWindowController,
             PlayerView.Pool playerPool,
             PlayerConfig playerConfig)
         {
+            _xmlSystem = xmlSystem;
             _backPackController = backPackController;
             _uiPlayingWindowController = uiPlayingWindowController;
             _playerPool = playerPool;
@@ -47,6 +51,13 @@ namespace Player
             _playerView.OnLoseEnemy += LoseEnemy;
             _playerView.OnDead += DeadLogic;
             _backPackController.OnChangeGun += ChangeGun;
+            if (_xmlSystem.LoadFromXML("PlayerHealth") != null)
+            {
+                _playerView.Heath = int.Parse(_xmlSystem.LoadFromXML("PlayerHealth"));
+                _playerView.healthImage.fillAmount = _playerView.Heath / 100;
+                Debug.Log("AAAAAA="+ _playerView.Heath);
+            }
+
             return _playerView;
         }
         private void DeadLogic(PlayerView playerView)

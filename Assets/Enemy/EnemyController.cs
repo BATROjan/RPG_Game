@@ -8,6 +8,7 @@ namespace Enemy
 {
     public class EnemyController: ITickable
     {
+        public List<EnemyView> EnemyViews = new List<EnemyView>();
         private readonly TickableManager _tickableManager;
         private readonly EnemyConfig _enemyConfig;
         private readonly EnemyView.Pool _enemyPool;
@@ -34,6 +35,7 @@ namespace Enemy
             var enemy = _enemyPool.Spawn(_enemyConfig.GetEnemyModelByType(type));
             enemy.transform.position = GetRandomPosition();
             _dictEnemyViews.Add(enemy.GetInstanceID(), enemy);
+            EnemyViews.Add(enemy);
             enemy.PlayerIsFound += ReadyToMoveForPlayer;
             enemy.OnDead += DeadLogic;
             return enemy;
@@ -67,6 +69,7 @@ namespace Enemy
         private void DeadLogic(EnemyView enemyView)
         {
             _dictEnemyViews.Remove(enemyView.GetInstanceID());
+            EnemyViews.Remove(enemyView);
             _enemyPool.Despawn(enemyView);
         }
 

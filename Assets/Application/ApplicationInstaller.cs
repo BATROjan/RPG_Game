@@ -10,6 +10,7 @@ using Gun;
 using MainCamera;
 using Player;
 using UnityEngine;
+using XMLSystem;
 using Zenject;
 
 public class ApplicationInstaller : MonoInstaller
@@ -18,6 +19,7 @@ public class ApplicationInstaller : MonoInstaller
     {
         CameraInstaller.Install(Container);
         UIInstaller.Install(Container);
+        XMLSystemInstaller.Install(Container);
         BackPackInstaller.Install(Container);
         GridInstaller.Install(Container);
         PlayerInstaller.Install(Container);

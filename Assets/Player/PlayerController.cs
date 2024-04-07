@@ -45,8 +45,20 @@ namespace Player
             _playerView.OnTakeBullet += TakeBullet;
             _playerView.OnFindEnemy += AddEnemy;
             _playerView.OnLoseEnemy += LoseEnemy;
+            _playerView.OnDead += DeadLogic;
             _backPackController.OnChangeGun += ChangeGun;
             return _playerView;
+        }
+        private void DeadLogic(PlayerView playerView)
+        {
+            _playerView.OnTakeGun -= TakeGun;
+            _playerView.OnTakeBullet -= TakeBullet;
+            _playerView.OnFindEnemy -= AddEnemy;
+            _playerView.OnLoseEnemy -= LoseEnemy;
+            _playerView.OnDead -= DeadLogic;
+            _backPackController.OnChangeGun -= ChangeGun;
+            _playerView = null;
+            _playerPool.Despawn(playerView);
         }
 
         private void LoseEnemy(EnemyView enemy)
@@ -115,6 +127,10 @@ namespace Player
                         currentEnemy.Health -= _gunView.GetGunDamage();
                         float percent = (float)currentEnemy.Health / currentEnemy.MaxHealth;
                         currentEnemy.HealthImage.fillAmount = percent;
+                        if (currentEnemy.Health<=0)
+                        {
+                            currentEnemy.OnDead?.Invoke(currentEnemy);
+                        }
                         _isReadyToFire = true;
                     }
                 }

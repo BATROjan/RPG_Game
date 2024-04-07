@@ -35,7 +35,7 @@ namespace Enemy
             enemy.transform.position = GetRandomPosition();
             _dictEnemyViews.Add(enemy.GetInstanceID(), enemy);
             enemy.PlayerIsFound += ReadyToMoveForPlayer;
-
+            enemy.OnDead += DeadLogic;
             return enemy;
         }
 
@@ -64,6 +64,12 @@ namespace Enemy
             return enemy;
         }
 
+        private void DeadLogic(EnemyView enemyView)
+        {
+            _dictEnemyViews.Remove(enemyView.GetInstanceID());
+            _enemyPool.Despawn(enemyView);
+        }
+
         public void Tick()
         {
             foreach (var enemy in _dictEnemyViews)
@@ -90,6 +96,10 @@ namespace Enemy
             _dictEnemyViews[enemy.GetInstanceID()].IsReadyToAttack = false;
             _playerView.healthImage.fillAmount -= enemy.Damage*0.01f;
             _playerView.Heath -= enemy.Damage;
+            if (_playerView.Heath <= 0)
+            {
+                _playerView.OnDead?.Invoke(_playerView);
+            }
             DOVirtual.DelayedCall(2, () => _dictEnemyViews[enemy.GetInstanceID()].IsReadyToAttack = true);
         }
     }

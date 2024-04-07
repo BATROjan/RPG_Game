@@ -9,10 +9,9 @@ namespace Enemy
     public class EnemyView : MonoBehaviour
     {
         public Action<PlayerView> PlayerIsFound;
-        public Action OntakeDamage;
+        public Action<EnemyView> OnDead;
         
         public bool IsFound;
-        public bool IsDead;
         public bool IsReadyToAttack = true;
         public float Speed;
         public int MaxHealth;

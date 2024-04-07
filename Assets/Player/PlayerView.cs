@@ -13,6 +13,8 @@ namespace Player
         public Action<GunView> OnTakeGun;
         public Action<BulletView> OnTakeBullet;
         
+        public Action<PlayerView> OnDead;
+        
         public Action<EnemyView> OnFindEnemy;
         public Action<EnemyView> OnLoseEnemy;
 

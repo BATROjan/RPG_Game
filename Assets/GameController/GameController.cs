@@ -66,6 +66,7 @@ namespace GameController
                 _xmlSystem.SaveHealthToXML(_playerController.GetPlayerView().Heath.ToString());
             }
             _xmlSystem.SaveEnemyCountToXML(_enemyController.EnemyViews);
+            _xmlSystem.SaveGunInBackPackToXML(_backPackController._listGuns);
             Application.Quit();
         }
     }

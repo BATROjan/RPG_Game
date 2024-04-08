@@ -6,6 +6,7 @@ using Gun;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using XMLSystem;
 
 namespace BackPack
 {
@@ -15,25 +16,29 @@ namespace BackPack
         
         public Action<GunView> OnChangeGun;
         
+        public List<GunView> _listGuns = new List<GunView>();
+
+        private readonly IXMLSystem _xmlSystem;
         private readonly BulletController _bulletController;
         private readonly GunController _gunController;
         private readonly UIPlayingWindowController _uiPlayingWindowController;
 
         private bool isActive;
-        
+
         private UIPlayingWindow _uiPlayingWindow;
 
         private Dictionary<GunConfig.GunType, GunView> _dictionaryOfGun = new Dictionary<GunConfig.GunType, GunView>();
         private Dictionary<Sprite, int> _bulletDictionaryCount = new Dictionary<Sprite, int>();
         private Dictionary<Sprite,CellView> _dictionaryOfBulletCells = new Dictionary<Sprite,CellView>();
-        
+
         private GunView currentGun;
         private CellView currentCell;
-        public BackPackController(
+        public BackPackController(IXMLSystem xmlSystem,
             BulletController bulletController,
             GunController gunController,
             UIPlayingWindowController uiPlayingWindowController)
         {
+            _xmlSystem = xmlSystem;
             _bulletController = bulletController;
             _gunController = gunController;
             _uiPlayingWindowController = uiPlayingWindowController;
@@ -48,7 +53,7 @@ namespace BackPack
                     currentGun = gunView;
                 }
                 _dictionaryOfGun.Add(gunView.GetGunType(), gunView);
-                
+                _listGuns.Add(gunView);
                 foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
                 {
                     if (!cell.IsUsed)
@@ -135,6 +140,16 @@ namespace BackPack
         public void Init()
         {
             _uiPlayingWindow = _uiPlayingWindowController.GetWindow();
+            for (int i = 0; i < _gunController.GunViews.Count; i++)
+            {
+                if (_xmlSystem.LoadFromXML("gun" + i.ToString(), "type") != null)
+                {
+                   Debug.Log(_gunController.GunViews[i].GetGunType());
+                   GunConfig.GunType type = (GunConfig.GunType)Enum.Parse(typeof(GunConfig.GunType) ,_xmlSystem.LoadFromXML("gun" + i.ToString(), "type"));
+                   var gunView = _gunController.GetViewByType(type);
+                   TakeGunInBackPack(gunView);
+                }
+            }
 
             _uiPlayingWindow.Buttons[1].OnClick += ControllBackPack;
             _uiPlayingWindow.BackPackView.DeleteButton.OnClick += DeleteItem;
@@ -150,6 +165,7 @@ namespace BackPack
                     currentGun = null;
                     OnChangeGun?.Invoke(currentGun);
                 }
+                _listGuns.Remove(currentCell.GunView);
             }
             currentCell.GunView = null;
             currentCell.BulletView = null;

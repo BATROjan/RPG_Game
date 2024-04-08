@@ -82,9 +82,19 @@ namespace XMLSystem
             xmlDoc.Save(_savePath + _xmlConfig.SaveName); 
         }
 
-        public void SaveGunInBackPackToXML(Dictionary<GunView, float> dictionary)
+        public void SaveGunInBackPackToXML(List<GunView> list)
         {
-            throw new System.NotImplementedException();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(_savePath + _xmlConfig.SaveName);
+            var rootNode = xmlDoc.DocumentElement;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                var elem = xmlDoc.CreateElement("gun" + i.ToString());
+                elem.SetAttribute("type", list[i].GetGunType().ToString());
+                rootNode.AppendChild(elem);
+            }
+            xmlDoc.Save(_savePath + _xmlConfig.SaveName);
         }
 
         public void SaveBulletToXML(Dictionary<BulletView, float> dictionary)
@@ -120,11 +130,11 @@ namespace XMLSystem
             }
             return computerPath;
 #else
-        if (!Directory.Exists(computerPath))
-        {
-            Directory.CreateDirectory(computerPath);
-        }
-        return computerPath;
+            if (!Directory.Exists(computerPath))
+            {
+                Directory.CreateDirectory(computerPath);
+            }
+            return computerPath;
 #endif
         }
     }

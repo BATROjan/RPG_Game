@@ -5,6 +5,7 @@ namespace Gun
 {
     public class GunController
     {
+        public List<GunView> GunViews= new List<GunView>();
         private readonly GunConfig _gunConfig;
         private readonly GunView.Pool _gunViewPool;
 
@@ -22,8 +23,15 @@ namespace Gun
             var gun = _gunViewPool.Spawn(_gunConfig.GetGunModelByType(type));
             gun.transform.position = GetRandomPosition();
             _dictionaryOfGunViews.Add(gun.GetGunType(), gun);
+            GunViews.Add(gun);
             return gun;
         }
+
+        public GunView GetViewByType(GunConfig.GunType type)
+        {
+            return _dictionaryOfGunViews[type];
+        }
+
         private Vector3 GetRandomPosition( )
         {
             Vector3 position = new Vector3(Random.Range(-11, 20), Random.Range(0, 12), 0);

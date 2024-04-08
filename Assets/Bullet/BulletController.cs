@@ -21,7 +21,10 @@ namespace Bullet
         {
             var bulletView = _pool.Spawn(_bulletConfig.GetBulletModelByID(ID));
             bulletView.transform.position = GetRandomPosition();
-            _dictionary.Add(bulletView.GetBulletCount(), bulletView);
+            if (!_dictionary.ContainsKey(bulletView.GetBulletCount()))
+            {
+                _dictionary.Add(bulletView.GetBulletCount(), bulletView);
+            }
             return bulletView;
         }
 

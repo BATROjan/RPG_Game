@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Bullet;
 using DG.Tweening;
 using Player;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Enemy
     public class EnemyController: ITickable
     {
         public List<EnemyView> EnemyViews = new List<EnemyView>();
+        private readonly BulletController _bulletController;
         private readonly IXMLSystem _xmlSystem;
         private readonly TickableManager _tickableManager;
         private readonly EnemyConfig _enemyConfig;
@@ -21,11 +23,13 @@ namespace Enemy
         private bool isFind;
         private bool isReadyToAtack = true;
         public EnemyController(
+            BulletController bulletController,
             IXMLSystem xmlSystem,
             TickableManager tickableManager,
             EnemyConfig enemyConfig, 
             EnemyView.Pool enemyPool)
         {
+            _bulletController = bulletController;
             _xmlSystem = xmlSystem;
             _tickableManager = tickableManager;
             _enemyConfig = enemyConfig;
@@ -78,6 +82,8 @@ namespace Enemy
 
         private void DeadLogic(EnemyView enemyView)
         {
+            var buff = _bulletController.SpawnBullet(5);
+            buff.transform.position = enemyView.transform.position;
             _dictEnemyViews.Remove(enemyView.GetInstanceID());
             EnemyViews.Remove(enemyView);
             _enemyPool.Despawn(enemyView);

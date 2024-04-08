@@ -24,6 +24,17 @@ namespace Bullet
             _dictionary.Add(bulletView.GetBulletCount(), bulletView);
             return bulletView;
         }
+
+        public BulletView SpawnCustomBullet(int count)
+        {
+            var bulletview = _pool.Spawn(_bulletConfig.GetBulletModelByID(1));
+            bulletview.CorrectBulletCount(count - 1);
+            if (!_dictionary.ContainsKey(bulletview.GetBulletCount()))
+            {
+                _dictionary.Add(bulletview.GetBulletCount(),bulletview);
+            }
+            return bulletview;
+        }
         
         private Vector3 GetRandomPosition( )
         {

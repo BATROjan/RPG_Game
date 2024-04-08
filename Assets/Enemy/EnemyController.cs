@@ -47,7 +47,6 @@ namespace Enemy
                 enemy.Health = int.Parse(_xmlSystem.LoadFromXML(enemy.EnemyType.ToString()+ id.ToString(), "health"));
                 float percent = (float)enemy.Health / enemy.MaxHealth;
                 enemy.HealthImage.fillAmount = percent;
-                Debug.Log("AAAAAA="+ enemy.Health);
             }
             return enemy;
         }

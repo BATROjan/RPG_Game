@@ -11,7 +11,7 @@ namespace XMLSystem
         void SaveHealthToXML(string health);
         void SaveEnemyCountToXML(List<EnemyView> list);
         void SaveGunInBackPackToXML(List<GunView> list);
-        void SaveBulletToXML(Dictionary<BulletView, float> dictionary);
+        void SaveBulletToXML(CellView cellView);
         string LoadFromXML(string key, string value);
     }
 }

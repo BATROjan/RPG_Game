@@ -12,7 +12,12 @@ namespace Bullet
         public int GetBulletCount()
         {
             return _bulletCount;
-        }  
+        }
+
+        public void CorrectBulletCount(int count)
+        {
+            _bulletCount += count;
+        }
         public Sprite GetBulletSprite()
         {
             return bulletSpriteRenderer.sprite;

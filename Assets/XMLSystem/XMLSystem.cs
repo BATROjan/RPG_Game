@@ -97,9 +97,17 @@ namespace XMLSystem
             xmlDoc.Save(_savePath + _xmlConfig.SaveName);
         }
 
-        public void SaveBulletToXML(Dictionary<BulletView, float> dictionary)
+        public void SaveBulletToXML(CellView cellView)
         {
-            throw new System.NotImplementedException();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(_savePath + _xmlConfig.SaveName);
+            var rootNode = xmlDoc.DocumentElement;
+            
+            var elem = xmlDoc.CreateElement("bullet");
+            elem.SetAttribute("count", cellView.Count.text);
+            rootNode.AppendChild(elem);
+            
+            xmlDoc.Save(_savePath + _xmlConfig.SaveName);
         }
 
         private string GenerateSavePath()

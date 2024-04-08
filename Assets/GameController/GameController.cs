@@ -67,6 +67,11 @@ namespace GameController
             }
             _xmlSystem.SaveEnemyCountToXML(_enemyController.EnemyViews);
             _xmlSystem.SaveGunInBackPackToXML(_backPackController._listGuns);
+            if (_backPackController.GetCellWithBullet())
+            {
+                _xmlSystem.SaveBulletToXML(_backPackController.GetCellWithBullet());
+            }
+
             Application.Quit();
         }
     }

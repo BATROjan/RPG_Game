@@ -87,6 +87,7 @@ namespace BackPack
                             currentCell = cell;
                         }
                         cell.CellImage.sprite = bulletView.GetBulletSprite();
+                        cell.BulletView = bulletView;
                         cell.Count.text = bulletView.GetBulletCount().ToString();
                         cell.IsUsed = true;
                         _bulletController.Despawn(bulletView);
@@ -143,16 +144,32 @@ namespace BackPack
             for (int i = 0; i < _gunController.GunViews.Count; i++)
             {
                 if (_xmlSystem.LoadFromXML("gun" + i.ToString(), "type") != null)
-                {
-                   Debug.Log(_gunController.GunViews[i].GetGunType());
-                   GunConfig.GunType type = (GunConfig.GunType)Enum.Parse(typeof(GunConfig.GunType) ,_xmlSystem.LoadFromXML("gun" + i.ToString(), "type"));
-                   var gunView = _gunController.GetViewByType(type);
-                   TakeGunInBackPack(gunView);
+                { 
+                    GunConfig.GunType type = (GunConfig.GunType)Enum.Parse(typeof(GunConfig.GunType) ,_xmlSystem.LoadFromXML("gun" + i.ToString(), "type"));
+                    var gunView = _gunController.GetViewByType(type);
+                    TakeGunInBackPack(gunView);
                 }
             }
-
+            if (_xmlSystem.LoadFromXML("bullet", "count")!= null)
+            {
+                int count = int.Parse(_xmlSystem.LoadFromXML("bullet", "count"));
+                var bullet = _bulletController.SpawnCustomBullet(count);
+                TakeBulletInBackPack(bullet);
+            }
             _uiPlayingWindow.Buttons[1].OnClick += ControllBackPack;
             _uiPlayingWindow.BackPackView.DeleteButton.OnClick += DeleteItem;
+        }
+
+        public CellView GetCellWithBullet()
+        {
+            foreach (var cell in _uiPlayingWindow.BackPackView.CellViews)
+            {
+                if (cell.BulletView)
+                {
+                    return cell;
+                }
+            }
+            return null;
         }
 
         private void DeleteItem()
